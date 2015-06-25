@@ -144,11 +144,15 @@
     },
 
     center: function() {
+        var marginTop = (this.$elm.outerHeight() / 2);
+        if (this.$elm.outerHeight() > window.innerHeight) {
+            marginTop = (window.innerHeight / 2) - 25;
+        }
       this.$elm.css({
-        position: 'fixed',
+        position: 'absolute',
         top: "50%",
         left: "50%",
-        marginTop: - (this.$elm.outerHeight() / 2),
+        marginTop: - (marginTop),
         marginLeft: - (this.$elm.outerWidth() / 2),
         zIndex: this.options.zIndex + 1
       });
@@ -223,4 +227,7 @@
     event.preventDefault();
     $(this).modal();
   });
+  $(window).resize(function() {
+    current.resize();
+  })
 })(jQuery);
