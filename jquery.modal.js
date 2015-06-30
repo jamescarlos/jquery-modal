@@ -103,6 +103,7 @@
     },
 
     show: function() {
+      $('body').css('overflow', 'hidden');
       this.$elm.trigger($.modal.BEFORE_OPEN, [this._ctx()]);
       if (this.options.showClose) {
         this.closeButton = $('<a href="#close-modal" rel="modal:close" class="close-modal ' + this.options.closeClass + '">' + this.options.closeText + '</a>');
@@ -119,6 +120,7 @@
     },
 
     hide: function() {
+      $('body').css('overflow', 'auto');
       this.$elm.trigger($.modal.BEFORE_CLOSE, [this._ctx()]);
       if (this.closeButton) this.closeButton.remove();
       this.$elm.removeClass('current');
@@ -144,10 +146,14 @@
     },
 
     center: function() {
-        var marginTop = (this.$elm.outerHeight() / 2);
-        if (this.$elm.outerHeight() > window.innerHeight) {
-            marginTop = (window.innerHeight / 2) - 25;
-        }
+      var scrollTop = $(window).scrollTop();
+      var marginTop = (this.$elm.outerHeight() / 2);
+      if (this.$elm.outerHeight() > window.innerHeight) {
+        $('body').css('overflow', 'auto');
+        marginTop = (window.innerHeight / 2) - 25;
+      }
+
+      marginTop -= scrollTop;
       this.$elm.css({
         position: 'absolute',
         top: "50%",
@@ -228,6 +234,8 @@
     $(this).modal();
   });
   $(window).resize(function() {
-    current.resize();
+    if (current) {
+      current.resize();
+    }
   })
 })(jQuery);
